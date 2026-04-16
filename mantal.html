@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHANTOM V33 | GLOBAL SYNC DNS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.9);
+            --vpn-orange: #ff7518;
+            --dark-core: #010103;
+            --border: rgba(212, 175, 55, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-user-select: none; user-select: none; }
+        body { background: radial-gradient(circle at center, #0d0d1a, var(--dark-core)); color: #fff; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+
+        .app-shell {
+            width: 440px; height: 880px;
+            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(80px);
+            border: 2px solid var(--border); border-radius: 50px;
+            display: flex; flex-direction: column; position: relative;
+            box-shadow: 0 0 120px #000, inset 0 0 50px var(--gold-glow);
+        }
+
+        /* Access Control */
+        #loginOverlay {
+            position: absolute; width: 100%; height: 100%; background: #000;
+            z-index: 9999; border-radius: 48px; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 40px; text-align: center;
+        }
+
+        header { padding: 45px 20px 5px; text-align: center; }
+        header h1 { font-family: 'Orbitron'; font-size: 1.15rem; letter-spacing: 6px; color: var(--gold); text-shadow: 0 0 20px var(--gold-glow); }
+
+        /* Real-Time Traffic Monitor */
+        .vpn-monitor {
+            background: rgba(255, 117, 24, 0.1); border-left: 5px solid var(--vpn-orange);
+            margin: 10px 25px; padding: 15px; border-radius: 12px; font-size: 0.65rem;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+
+        nav { 
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;
+            background: rgba(0,0,0,0.95); margin: 5px 25px; 
+            border-radius: 15px; padding: 8px; border: 1px solid var(--border);
+        }
+        .nav-btn { background: none; border: none; color: #555; font-size: 0.45rem; font-weight: 700; padding: 12px 0; cursor: pointer; text-transform: uppercase; font-family: 'Orbitron'; }
+        .nav-btn.active { color: var(--gold); background: rgba(212, 175, 55, 0.1); border-radius: 8px; border-bottom: 2px solid var(--gold); }
+
+        .content { flex: 1; padding: 20px; overflow-y: auto; }
+        .card { background: rgba(0,0,0,0.98); border: 1px solid #1a1a1a; border-radius: 20px; padding: 20px; margin-bottom: 15px; border-left: 3px solid var(--gold); }
+        .section { display: none; }
+        .section.active { display: block; animation: zoomIn 0.4s ease; }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .input-vip { width: 100%; padding: 16px; background: #000; border: 1px solid #333; border-radius: 12px; color: var(--gold); text-align: center; outline: none; margin-bottom: 10px; font-size: 0.8rem; font-family: 'Orbitron'; }
+        .btn-gold { width: 100%; padding: 16px; background: linear-gradient(135deg, #d4af37, #8e6d2f); border: none; border-radius: 15px; color: #000; font-weight: 900; cursor: pointer; text-transform: uppercase; font-family: 'Orbitron'; font-size: 0.7rem; }
+
+        .console { background: #000; padding: 15px; border-radius: 12px; font-family: monospace; font-size: 0.55rem; color: #00ff00; height: 110px; overflow-y: auto; border: 1px solid #222; line-height: 1.4; }
+        
+        .info-list { font-size: 0.65rem; color: #aaa; list-style: none; margin-top: 10px; }
+        .info-list li { margin-bottom: 8px; display: flex; justify-content: space-between; border-bottom: 1px solid #222; padding-bottom: 4px; }
+        .info-list li span { color: var(--gold); font-weight: bold; }
+
+        .soc-btn { display: flex; align-items: center; justify-content: center; padding: 16px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 0.8rem; color: white; margin-top: 10px; font-family: 'Orbitron'; }
+        .wa { background: #25d366; } .tt { background: #000; border: 1px solid #fff; }
+
+        footer { padding: 15px; text-align: center; border-top: 1px solid var(--border); }
+        #timerText { color: var(--gold); font-weight: 700; font-size: 0.85rem; font-family: 'Orbitron'; }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div class="app-shell">
+    <div id="loginOverlay">
+        <div style="font-size: 3.5rem; margin-bottom: 20px;">🛡️</div>
+        <h2 style="font-family:'Orbitron'; color:var(--gold); margin-bottom:10px;">PHANTOM ELITE V33</h2>
+        <p style="font-size: 0.6rem; color: #555; margin-bottom: 30px;">GLOBAL PANEL SYNC SYSTEM</p>
+        <input type="password" id="passKey" class="input-vip" placeholder="ENTER LICENSE KEY">
+        <button class="btn-gold" onclick="verify()">START SYSTEM</button>
+        <a href="https://wa.me/6281234567890?text=Beli%20Key%20Elite%20V33" class="soc-btn wa" style="width: 100%;">BELI PASSWORD (ADMIN)</a>
+    </div>
+
+    <header><h1>PHANTOM ELITE</h1></header>
+
+    <div class="vpn-monitor">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-weight:bold; color:var(--vpn-orange);">VPN DATA FLOW</span>
+            <span id="vpnRegion" style="font-size:0.5rem; opacity:0.6;">DISCONNECTED</span>
+        </div>
+        <div style="font-size:0.55rem;" id="trafficData">Traffic: 0.00 MB / 0.00 GB</div>
+    </div>
+
+    <nav>
+        <button class="nav-btn active" onclick="tab('acc', this)">Check</button>
+        <button class="nav-btn" onclick="tab('vpn', this)">Vpn</button>
+        <button class="nav-btn" onclick="tab('dmg', this)">Dmg</button>
+        <button class="nav-btn" onclick="tab('bot', this)">Bot</button>
+        <button class="nav-btn" onclick="tab('dns', this)">Dns</button>
+        <button class="nav-btn" onclick="tab('sos', this)">Sos</button>
+    </nav>
+
+    <div class="content">
+        <div id="acc" class="section active">
+            <div class="card">
+                <input type="number" id="mlId" class="input-vip" placeholder="USER ID">
+                <input type="number" id="mlSrv" class="input-vip" placeholder="SERVER ID">
+                <button class="btn-gold" onclick="checkAccount()">CHECK ACCOUNT ONLINE</button>
+            </div>
+            <div id="accRes" style="display:none;" class="card">
+                <h4 style="font-size:0.7rem; color:var(--gold); margin-bottom:10px; font-family:'Orbitron';">INFORMASI AKUN</h4>
+                <ul class="info-list">
+                    <li>Username: <span id="outName">PHANTOM_USER</span></li>
+                    <li>Negara: <span id="outCountry">Indonesia (ID)</span></li>
+                    <li>Registrasi: <span id="outDate">Loading...</span></li>
+                    <li>Usia Akun: <span id="outAge">Loading...</span></li>
+                    <li>Status: <span style="color:#00ff00;">ONLINE</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="vpn" class="section">
+            <div class="card">
+                <h3 style="color:var(--vpn-orange); font-size:0.7rem; text-align:center; margin-bottom:15px;">VPN REAL TUNNEL</h3>
+                <select id="vpnSel" class="input-vip">
+                    <option value="CAMBODIA">CAMBODIA (BOT SERVER)</option>
+                    <option value="MYANMAR">MYANMAR (EASY ENEMIES)</option>
+                    <option value="BRAZIL">BRAZIL (LAG SERVER)</option>
+                </select>
+                <button class="btn-gold" id="vpnBtn" onclick="toggleVpn()">CONNECT VPN REAL</button>
+                <div class="console" id="vpnCon" style="margin-top:10px; display:none;"></div>
+            </div>
+        </div>
+
+        <div id="dmg" class="section">
+            <div class="card">
+                <h3 style="color:red; font-size:0.75rem; text-align:center; margin-bottom:15px;">INJECK DAMAGE 90%</h3>
+                <button class="btn-gold" style="background:red; color:white;" onclick="inject()">INJECK & START GAME</button>
+                <div id="pBar" style="display:none; width:100%; height:4px; background:#111; border-radius:5px; margin-top:20px; overflow:hidden;">
+                    <div id="pFill" style="width:0%; height:100%; background:red;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="bot" class="section">
+            <div class="card">
+                <h3 style="color:var(--gold); font-size:0.75rem; text-align:center; margin-bottom:10px;">BOT MATCHMAKING COMMAND</h3>
+                <div class="console" id="botCon">
+                    > Seeking bot enemies...<br>
+                    > Rank alignment: BELOW USER...<br>
+                    > Status: Ready.
+                </div>
+                <button class="btn-gold" style="margin-top:10px;" onclick="runBot()">FIND BOT ENEMIES</button>
+            </div>
+        </div>
+
+        <div id="dns" class="section">
+            <div class="card">
+                <h3 style="color:cyan; font-size:0.75rem; text-align:center; margin-bottom:15px;">DYNAMIC DNS GENERATOR</h3>
+                <div class="console" id="dnsCon">
+                    > Standby...
+                </div>
+                <button class="btn-gold" style="background:cyan; color:#000; margin-top:10px;" onclick="generateDns()">GENERATE NEW DNS</button>
+            </div>
+        </div>
+
+        <div id="sos" class="section">
+            <a href="https://wa.me/082324350163" class="soc-btn wa">WHATSAPP ADMIN</a>
+            <a href="https://www.tiktok.com/@masterhub_v6" class="soc-btn tt">TIKTOK OFFICIAL</a>
+            
+             <a href="BOT GAME MOBILE LEGENDS PALING GACOR</a>
+        </div>
+    </div>
+
+    <footer>
+        <p id="timerText">LICENSE: UNVERIFIED</p>
+    </footer>
+</div>
+
+<script>
+    const KEY_MASTER = "PHANTOM-V33-ELITE";
+    const SESSION_TIME = 3600; 
+    let vpnActive = false;
+    let dataMB = 0;
+
+    function checkSession() {
+        const exp = localStorage.getItem('v33_exp');
+        if (exp) {
+            const rem = Math.floor((exp - Date.now()) / 1000);
+            if (rem > 0) {
+                document.getElementById('loginOverlay').style.display = 'none';
+                startClock(rem);
+            }
+        }
+    }
+
+    function verify() {
+        if(document.getElementById('passKey').value === KEY_MASTER) {
+            const end = Date.now() + (SESSION_TIME * 1000);
+            localStorage.setItem('v33_exp', end);
+            document.getElementById('loginOverlay').style.display = 'none';
+            startClock(SESSION_TIME);
+            alert("Sistem Elit Aktif! DNS Global Terhubung.");
+        } else {
+            alert("Key Salah! Beli password ke admin.");
+            window.location.href = "https://wa.me/6281234567890";
+        }
+    }
+
+    function startClock(s) {
+        let t = s;
+        setInterval(() => {
+            if(t <= 0) {
+                localStorage.removeItem('v33_exp');
+                location.reload();
+            } else {
+                t--;
+                const m = Math.floor(t/60);
+                const sc = t%60;
+                document.getElementById('timerText').innerText = `EXPIRED: ${m}:${sc < 10 ? '0'+sc : sc}`;
+            }
+        }, 1000);
+    }
+
+    function tab(id, b) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        b.classList.add('active');
+    }
+
+    function checkAccount() {
+        const id = document.getElementById('mlId').value;
+        const srv = document.getElementById('mlSrv').value;
+        if(!id || !srv) return alert("Masukkan ID dan Server!");
+
+        // Simulate Panel HTTPS Sync
+        let year = id.toString().length <= 8 ? 2018 : 2022;
+        let day = (parseInt(id.toString().substring(0,2)) % 28) + 1;
+        let age = 2026 - year;
+
+        document.getElementById('outDate').innerText = `${day} April ${year}`;
+        document.getElementById('outAge').innerText = `${age} Tahun`;
+        document.getElementById('accRes').style.display = 'block';
+        alert("Sinkronisasi HTTPS://MOBILELEGENDS Berhasil! Akun Terdeteksi Online.");
+    }
+
+    function toggleVpn() {
+        const btn = document.getElementById('vpnBtn');
+        const con = document.getElementById('vpnCon');
+        const loc = document.getElementById('vpnSel').value;
+        
+        if(!vpnActive) {
+            vpnActive = true;
+            btn.innerText = "DISCONNECT VPN";
+            btn.style.background = "#333";
+            con.style.display = 'block';
+            con.innerHTML = `> [SYSTEM] Connecting to Relay ${loc}...<br>> [SYSTEM] VPN REAL TERSAMBUNG<br>> [SYSTEM] Data Tunneling Active.`;
+            
+            setTimeout(() => {
+                document.getElementById('vpnRegion').innerText = `${loc} TERSAMBUNG`;
+                monitorTraffic();
+            }, 1000);
+        } else {
+            vpnActive = false;
+            btn.innerText = "CONNECT VPN REAL";
+            btn.style.background = "var(--vpn-orange)";
+            document.getElementById('vpnRegion').innerText = "DISCONNECTED";
+            con.style.display = 'none';
+        }
+    }
+
+    function monitorTraffic() {
+        setInterval(() => {
+            if(vpnActive) {
+                dataMB += Math.random() * 12.5;
+                const gb = (dataMB / 1024).toFixed(2);
+                document.getElementById('trafficData').innerText = `Traffic: ${dataMB.toFixed(2)} MB / ${gb} GB`;
+            }
+        }, 1000);
+    }
+
+    function runBot() {
+        const con = document.getElementById('botCon');
+        const loc = document.getElementById('vpnSel').value;
+        con.innerHTML = `> [COMMAND] Scanning Bot Enemies...<br>> [SYSTEM] VPN TERSAMBUNG KE ${loc}<br>> STATUS: MUSUH LUAR TERDETEKSI!`;
+        alert("Bot Finder Aktif! Mencari musuh luar dan tim rank rendah.");
+    }
+
+    function generateDns() {
+        const con = document.getElementById('dnsCon');
+        const dns = `${Math.floor(Math.random()*999999)}.${Math.floor(Math.random()*9999)}.phantom-net.vip`;
+        con.innerHTML = `> New Host: ${dns}<br>> Status: ACTIVE`;
+        alert("DNS Pribadi Berhasil Di-generate Berbeda!");
+    }
+
+    function inject() {
+        const fill = document.getElementById('pFill');
+        document.getElementById('pBar').style.display = 'block';
+        let w = 0;
+        let it = setInterval(() => {
+            if(w>=100) {
+                clearInterval(it);
+                alert("Injeck 90% Sukses! Mengarahkan ke Game...");
+                window.location.href = "intent://#Intent;scheme=com.mobile.legends;package=com.mobile.legends;end";
+            } else { w++; fill.style.width = w+'%'; }
+        }, 30);
+    }
+
+    window.onload = checkSession;
+</script>
+</body>
+</html>
